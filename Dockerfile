@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-debian:17.0.10-13
+FROM eclipse-temurin:17.0.10_7-jdk-jammy
 WORKDIR /appmavenjenkins
 ADD . /appmavenjenkins
 COPY target/demo-0.0.1.jar /appmavenjenkins/app.jar
