@@ -3,7 +3,6 @@ WORKDIR /appmavenjenkins
 ADD . /appmavenjenkins
 COPY target/demo-0.0.1.jar /appmavenjenkins/app.jar
 
-ENV NAME_DB ${DB_HOST:-jdbc:h2:file:./test}
 ENV USERNAME_DB ${USERNAME_DB:-user}
 ENV PASSWORD_DB ${PASSWORD_DB:-password}
 
