@@ -12,4 +12,3 @@ EXPOSE 8000 9092
 
 # Comando para ejecutar tanto la aplicación Spring Boot como el servidor H2
 CMD java -jar app.jar -Dserver.port=8000 & java -cp h2.jar org.h2.tools.Server -tcp -tcpAllowOthers -tcpPort 9092
-
