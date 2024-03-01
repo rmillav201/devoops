@@ -8,5 +8,5 @@ ENV USERNAME_DB ${DB_USERNAME:-user}
 ENV PASSWORD_DB ${DB_PASSWORD:-password}
 ENV PORT ${SERVER_PORT:-8000}
 
-EXPOSE 8000
+EXPOSE ${PORT}
 ENTRYPOINT ["java", "-jar", "/appmavenjenkins/app.jar", "-web -webAllowOthers -tcp -tcpAllowOthers -browser"]
