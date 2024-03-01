@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devops-demo-config
+data:
+  ENV_VARIABLE: |
+    value
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-demo-deployment
+  labels:
+    app: devops
+spec:
+  replicas: 2  
+  selector:
+    matchLabels:
+      app: devops
+  template:
+    metadata:
+      labels:
+        app: devops
+    spec:
+      containers:
+      - name: devops-container
+        image: rmillav201/devop:a4afb05
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        env:
+        - name: ENV_VARIABLE
+          valueFrom:
+            configMapKeyRef:
+              name: devops-demo-config
+              key: ENV_VARIABLE
+        - name: USERNAME_DB
+          valueFrom:
+            secretKeyRef:
+              name: devops-demo-secret
+              key: USERNAME_DB
+        - name: PASSWORD_DB
+          valueFrom:
+            secretKeyRef:
+              name: devops-demo-secret
+              key: PASSWORD_DB
+        volumeMounts:
+        - name: shared-volume
+          mountPath: /data/shared
+      volumes:
+      - name: shared-volume
+        persistentVolumeClaim:
+          claimName: shared-volume-claim
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: devops-demo-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: devops-demo-deployment
+  minReplicas: 2  
+  maxReplicas: 5  
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50  
